@@ -1,0 +1,5 @@
+<mat-card class="card-section">
+    <div *ngFor="let item of profile | keyvalue">
+        <p><strong>{{item.key}}: </strong>{{item.value}}</p>
+    </div>
+</mat-card>
