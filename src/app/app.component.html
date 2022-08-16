@@ -2,10 +2,10 @@
     <a class="title" href="/">{{ title }}</a>
 
     <div class="toolbar-spacer"></div>
-
+    <a *ngIf="isAuthenticated">{{activeUser}}</a>
     <a mat-button [routerLink]="['profile']">Profile</a>
-    <button mat-raised-button>Login</button>
-    <button mat-raised-button color="accent">Logout</button>
+    <button mat-raised-button (click)="login()" *ngIf="!isAuthenticated">Login</button>
+    <button mat-raised-button color="accent" (click)="logout()" *ngIf="isAuthenticated">Logout</button>
 </mat-toolbar>
 
 <div class="container">
