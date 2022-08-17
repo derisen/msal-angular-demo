@@ -15,17 +15,19 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, ProtectedResourceScopes } from '@azure/msal-angular';
-import { InteractionType, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { BrowserCacheLocation, InteractionType, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { RouterStateSnapshot } from '@angular/router';
 
 function MSALInstanceFactory(): IPublicClientApplication {
     return new PublicClientApplication({
         auth: {
-            clientId: '980ef833-2fe9-4d9a-b727-de25fac8ff95',
-            authority: 'https://login.microsoftonline.com/cbaf2168-de14-4c72-9d88-f5f05366dbef',
-            redirectUri: 'http://localhost:4200/auth'
+            clientId: 'ENTER_YOUR_CLIENT_ID',
+            authority: 'https://login.microsoftonline.com/ENTER_YOUR_TENANT_ID',
+            redirectUri: '/auth',
+            postLogoutRedirectUri: '/',
         },
         cache: {
-            cacheLocation: 'localStorage',
+            cacheLocation: BrowserCacheLocation.SessionStorage,
         },
         system: {
             loggerOptions: {
@@ -42,7 +44,7 @@ function MsalGuardConfigFactory(): MsalGuardConfiguration {
     return {
         interactionType: InteractionType.Redirect,
         authRequest: {
-            scopes: ["user.read"]
+            scopes: ['user.read']
         }
     }
 }
