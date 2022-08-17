@@ -43,9 +43,12 @@ function MSALInstanceFactory(): IPublicClientApplication {
 function MsalGuardConfigFactory(): MsalGuardConfiguration {
     return {
         interactionType: InteractionType.Redirect,
-        authRequest: {
-            scopes: ['user.read']
-        }
+        authRequest: ((authService: MsalService, state: RouterStateSnapshot) => {
+            return {
+                scopes: ['user.read'],
+                loginHint: state.root.queryParams['userId'] || undefined
+            }
+        })
     }
 }
 
