@@ -25,6 +25,7 @@ function MSALInstanceFactory(): IPublicClientApplication {
             authority: 'https://login.microsoftonline.com/ENTER_YOUR_TENANT_ID',
             redirectUri: '/auth',
             postLogoutRedirectUri: '/',
+            clientCapabilities: ['CP1'],
         },
         cache: {
             cacheLocation: BrowserCacheLocation.SessionStorage,
@@ -55,7 +56,7 @@ function MsalGuardConfigFactory(): MsalGuardConfiguration {
 function MsalInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
     const myProtectedResourceMap = new Map<string, Array<string | ProtectedResourceScopes> | null>();
-    
+
     myProtectedResourceMap.set('https://graph.microsoft.com/v1.0/me', [
         {
             httpMethod: 'GET',
@@ -65,7 +66,14 @@ function MsalInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
     return {
         interactionType: InteractionType.Popup,
-        protectedResourceMap: myProtectedResourceMap
+        protectedResourceMap: myProtectedResourceMap,
+        authRequest: (msalService, httpReq, originalAuthRequest) => {
+            return {
+                ...originalAuthRequest,
+                claims: sessionStorage.getItem('claimsChallenge') ?
+                    window.atob(sessionStorage.getItem('claimsChallenge') as string) : undefined
+            }
+        }
     }
 }
 

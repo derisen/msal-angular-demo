@@ -18,7 +18,10 @@ export class ProfileComponent implements OnInit {
     }
 
     getProfile(): void {
-        this.profileService.getProfile()
-            .subscribe(profile => this.profile = profile);
+        this.profileService.getProfile().then((profile: Profile) => {
+            this.profile = profile;
+        }).catch((error: any) => {
+            console.log(error);
+        });
     }
 }
